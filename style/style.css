@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+* {
+  font-family: "Poppins", sans-serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+:root {
+  --purple: #8854c0;
+  --white: #fff;
+  --black: #000;
+  --grey: #f2f2f2;
+  --transition: all .3s ease-in-out;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  background-color: var(--grey);
+  color: var(--black);
+  min-height: 100vh;
+}
+
+.wrapper {
+  background-color: var(--white);
+  padding: 4rem;
+  line-height: 3;
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px;
+  width: 600px;
+  height: 680px;
+  position: relative;
+}
+.wrapper .container .head {
+  text-align: center;
+  line-height: 2;
+}
+.wrapper .container .head .title {
+  font-size: 2rem;
+}
+.wrapper .container .head .quiz-score {
+  color: var(--purple);
+  border: 1px solid var(--grey);
+  display: inline-block;
+  padding: 5px 20px;
+  font-weight: 700;
+}
+.wrapper .container .body .questions {
+  text-align: center;
+  font-size: 1.2rem;
+  line-height: 2;
+}
+.wrapper .container .body .questions .category {
+  font-size: 0.9rem;
+  font-weight: 500;
+  background-color: var(--purple);
+  color: var(--white);
+  padding: 0.2rem 0.4rem;
+  border-radius: 5px;
+}
+.wrapper .container .body .options {
+  list-style: none;
+}
+.wrapper .container .body .options li {
+  background-color: var(--purple);
+  margin: 15px 0;
+  border-radius: 10px;
+  padding: 0 15px;
+  color: var(--white);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 3px solid var(--purple);
+  box-shadow: 0 4px 0 0 #6c4298;
+}
+.wrapper .container .body .options li:hover {
+  background-color: var(--grey);
+  color: var(--black);
+  border-color: var(--grey);
+  box-shadow: 0 4px 0 0 #bbb;
+}
+.wrapper .container .body .options li:active {
+  transform: scale(0.97);
+}
+.wrapper .container .body .options .selected {
+  background-color: var(--grey);
+  color: var(--black);
+  border-color: var(--grey);
+  box-shadow: 0 4px 0 0 #bbb;
+}
+.wrapper .container .footer button {
+  border: none;
+  border-radius: 0.5rem;
+  outline: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  margin: 0 auto;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: block;
+  background-color: var(--grey);
+  color: var(--black);
+  letter-spacing: 2;
+  transition: var(--transition);
+  box-shadow: 0 4px 0 0 #bbb;
+}
+.wrapper .container .footer button:hover {
+  background-color: #e6e6e6;
+  box-shadow: 0 4px 0 0 #a7a7a7;
+}
+.wrapper .container .footer button:active {
+  transform: scale(0.97);
+}
+.wrapper .container .footer #again {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.6rem;
+  }
+  .wrapper {
+    width: 90%;
+    padding: 1.5rem 1rem 3rem;
+  }
+  .footer button {
+    font-size: 1rem !important;
+  }
+}/*# sourceMappingURL=style.css.map */

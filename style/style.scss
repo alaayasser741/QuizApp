@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+:root {
+    --purple: #8854c0;
+    --white: #fff;
+    --black: #000;
+    --grey: #f2f2f2;
+    --transition: all .3s ease-in-out;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    background-color: var(--grey);
+    color: var(--black);
+    min-height: 100vh;
+}
+
+.wrapper {
+    background-color: var(--white);
+    padding: 4rem;
+    line-height: 3;
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px;
+    width: 600px;
+    height: 680px;
+    position: relative;
+
+    .container {
+        .head {
+            text-align: center;
+            line-height: 2;
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .quiz-score {
+                color: var(--purple);
+                border: 1px solid var(--grey);
+                display: inline-block;
+                padding: 5px 20px;
+                font-weight: 700;
+            }
+        }
+
+        .body {
+            .questions {
+                text-align: center;
+                font-size: 1.2rem;
+                line-height: 2;
+
+                .category {
+                    font-size: .9rem;
+                    font-weight: 500;
+                    background-color: var(--purple);
+                    color: var(--white);
+                    padding: .2rem .4rem;
+                    border-radius: 5px;
+                }
+            }
+
+            .options {
+                list-style: none;
+
+                li {
+                    background-color: var(--purple);
+                    margin: 15px 0;
+                    border-radius: 10px;
+                    padding: 0 15px;
+                    color: var(--white);
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: var(--transition);
+                    border: 3px solid var(--purple);
+                    box-shadow: 0 4px 0 0 #6c4298;
+
+                    &:hover {
+                        background-color: var(--grey);
+                        color: var(--black);
+                        border-color: var(--grey);
+                        box-shadow: 0 4px 0 0 #bbb;
+                    }
+
+                    &:active {
+                        transform: scale(.97);
+                    }
+                }
+
+                .selected {
+                    background-color: var(--grey);
+                    color: var(--black);
+                    border-color: var(--grey);
+                    box-shadow: 0 4px 0 0 #bbb;
+                }
+            }
+        }
+
+        .footer {
+            button {
+                border: none;
+                border-radius: .5rem;
+                outline: 0;
+                font-size: 1.2rem;
+                font-weight: 600;
+                padding: .5rem 1rem;
+                margin: 0 auto;
+                text-transform: uppercase;
+                cursor: pointer;
+                display: block;
+                background-color: var(--grey);
+                color: var(--black);
+                letter-spacing: 2;
+                transition: var(--transition);
+                box-shadow: 0 4px 0 0 #bbb;
+
+                &:hover {
+                    background-color: #e6e6e6;
+                    box-shadow: 0 4px 0 0 #a7a7a7;
+                }
+
+                &:active {
+                    transform: scale(.97);
+                }
+            }
+
+            #again {
+                display: none;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 1.6rem;
+    }
+
+    .wrapper {
+        width: 90%;
+        padding: 1.5rem 1rem 3rem;
+    }
+
+    .footer {
+        button {
+            font-size: 1rem !important;
+        }
+    }
+}
