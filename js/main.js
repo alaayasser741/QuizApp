@@ -8,7 +8,8 @@ let _againBtn = document.getElementById("again");
 
 let correctAnswer = "",
   correcrScore = (askedCount = 0),
-  totalQuestion = 20;
+  totalQuestion = 20,
+  questcount = 0;
 
 async function loadQuist() {
   const url = "https://opentdb.com/api.php?amount=20&category=21";
@@ -21,12 +22,12 @@ function eventListener() {
   _checkBtn.addEventListener("click", checkAnswer);
   _againBtn.addEventListener("click", restartQuiz);
 }
-_result.innerHTML = [];
+
 document.addEventListener("DOMContentLoaded", function () {
   loadQuist();
   eventListener();
   _totalQuestion.textContent = totalQuestion;
-  _correctScore.textContent = correcrScore;
+  _correctScore.textContent = questcount;
 });
 function showQuestion(data) {
   _checkBtn.disabled = false;
@@ -78,6 +79,8 @@ function HTMLDecode(textString) {
   return doc.documentElement.textContent;
 }
 function checkCount() {
+  questcount++;
+  console.log(questcount)
   askedCount++;
   setCount();
   if (askedCount == totalQuestion) {
@@ -92,7 +95,7 @@ function checkCount() {
 }
 function setCount() {
   _totalQuestion.textContent = totalQuestion;
-  _correctScore.textContent = correcrScore;
+  _correctScore.textContent = questcount;
 }
 function restartQuiz() {
   correcrScore = askedCount = 0;
