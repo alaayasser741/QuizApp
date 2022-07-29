@@ -5,14 +5,15 @@ let _totalQuestion = document.getElementById("total-question");
 let _result = document.getElementById("result");
 let _checkBtn = document.getElementById("check");
 let _againBtn = document.getElementById("again");
+let _countDown = document.querySelector(".countdown");
 
 let correctAnswer = "",
   correcrScore = (askedCount = 0),
-  totalQuestion = 20,
+  totalQuestion = 15,
   questcount = 0;
 
 async function loadQuist() {
-  const url = "https://opentdb.com/api.php?amount=20&category=21";
+  const url = "https://opentdb.com/api.php?amount=50&category=15";
   const result = await fetch(`${url}`);
   const data = await result.json();
   _result.innerHTML = "";
@@ -28,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
   eventListener();
   _totalQuestion.textContent = totalQuestion;
   _correctScore.textContent = questcount;
+  countDown(120,totalQuestion);
 });
 function showQuestion(data) {
   _checkBtn.disabled = false;
@@ -55,7 +57,7 @@ function selectOption() {
       option.classList.add("selected");
     });
   });
-  console.log(correctAnswer);
+  // console.log(correctAnswer);
 }
 
 function checkAnswer() {
@@ -80,7 +82,7 @@ function HTMLDecode(textString) {
 }
 function checkCount() {
   questcount++;
-  console.log(questcount)
+  // console.log(questcount);
   askedCount++;
   setCount();
   if (askedCount == totalQuestion) {
@@ -92,16 +94,37 @@ function checkCount() {
       loadQuist();
     }, 300);
   }
+  // countDown(20,totalQuestion);
 }
 function setCount() {
   _totalQuestion.textContent = totalQuestion;
   _correctScore.textContent = questcount;
 }
+
+function countDown(duration, count) {
+  if (questcount < count) {
+    let minutes, seconds;
+    countDownInterval = setInterval(function () {
+      minutes = parseInt(duration / 60);
+      seconds = parseInt(duration % 60);
+      minutes= minutes < 10 ? `0${minutes}`:minutes ;
+      seconds= seconds < 10 ? `0${seconds}`:seconds ;
+      _countDown.innerHTML = `${minutes}:${seconds}`;
+      if(--duration < 0){
+        clearInterval(countDownInterval)
+        _result.innerHTML = `<p>Time finshed Your Score : ${correcrScore}.</p>`;
+        _againBtn.style.display = "block";
+        _checkBtn.style.display = "none";
+      }
+    }, 1000);
+  }
+}
 function restartQuiz() {
-  correcrScore = askedCount = 0;
+  correcrScore = askedCount = questcount = 0;
   _againBtn.style.display = "none";
   _checkBtn.style.display = "block";
   _checkBtn.disabled = false;
   setCount();
   loadQuist();
+  countDown(120,totalQuestion);
 }
