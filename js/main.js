@@ -9,7 +9,7 @@ let _countDown = document.querySelector(".countdown");
 
 let correctAnswer = "",
   correcrScore = (askedCount = 0),
-  totalQuestion = 15,
+  totalQuestion = 3,
   questcount = 0;
 
 async function loadQuist() {
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
   eventListener();
   _totalQuestion.textContent = totalQuestion;
   _correctScore.textContent = questcount;
-  countDown(120,totalQuestion);
+  countDown(20, totalQuestion);
 });
 function showQuestion(data) {
   _checkBtn.disabled = false;
@@ -107,14 +107,16 @@ function countDown(duration, count) {
     countDownInterval = setInterval(function () {
       minutes = parseInt(duration / 60);
       seconds = parseInt(duration % 60);
-      minutes= minutes < 10 ? `0${minutes}`:minutes ;
-      seconds= seconds < 10 ? `0${seconds}`:seconds ;
+      minutes = minutes < 10 ? `0${minutes}` : minutes;
+      seconds = seconds < 10 ? `0${seconds}` : seconds;
       _countDown.innerHTML = `${minutes}:${seconds}`;
-      if(--duration < 0){
-        clearInterval(countDownInterval)
+      if (--duration < 0) {
+        clearInterval(countDownInterval);
         _result.innerHTML = `<p>Time finshed Your Score : ${correcrScore}.</p>`;
         _againBtn.style.display = "block";
         _checkBtn.style.display = "none";
+      } else if ( questcount === count) {
+        clearInterval(countDownInterval);
       }
     }, 1000);
   }
@@ -126,5 +128,5 @@ function restartQuiz() {
   _checkBtn.disabled = false;
   setCount();
   loadQuist();
-  countDown(120,totalQuestion);
+  countDown(20, totalQuestion);
 }
