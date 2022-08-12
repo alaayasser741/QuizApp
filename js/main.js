@@ -6,14 +6,63 @@ let _result = document.getElementById("result");
 let _checkBtn = document.getElementById("check");
 let _againBtn = document.getElementById("again");
 let _countDown = document.querySelector(".countdown");
+let _category = document.getElementById("category");
+let _difficulty = document.getElementById("difficulty");
 
+let btnStart = document.getElementById("start");
+
+// let text = _category.options[_category.selectedIndex].text;
+// let value = _category.options[_category.selectedIndex].value;
+
+// /////////////////////////////////////////
+// Function to display selected value on screen
+function getSelectedOption(_category) {
+  var opt;
+  for (var i = 0, len = _category.options.length; i < len; i++) {
+    opt = _category.options[i];
+    if (opt.selected === true) {
+      break;
+    }
+  }
+  return opt;
+}
+function getSelectedOption(_difficulty) {
+  var opt;
+  for (var i = 0, len = _difficulty.options.length; i < len; i++) {
+    opt = _difficulty.options[i];
+    if (opt.selected === true) {
+      break;
+    }
+  }
+  return opt;
+}
+let cat = ``;
+let diff = ``;
+
+// /////////////////////////////////////////////
 let correctAnswer = "",
   correcrScore = (askedCount = 0),
   totalQuestion = 3,
   questcount = 0;
 
+  
+btnStart.onclick = (event) => {
+  event.preventDefault();
+  var opt = getSelectedOption(_category);
+  var optt = getSelectedOption(_difficulty);
+  cat = `&category=${opt.value}`;
+  diff = `&difficulty=${optt.value}`;
+  url = `https://opentdb.com/api.php?amount=50${cat}${diff}`;
+  console.log(url);
+};
+
 async function loadQuist() {
-  const url = "https://opentdb.com/api.php?amount=50&category=15";
+  var opt = getSelectedOption(_category);
+  var optt = getSelectedOption(_difficulty);
+  cat = `&category=${opt.value}`;
+  diff = `&difficulty=${optt.value}`;
+  const url = `https://opentdb.com/api.php?amount=50${cat}${diff}`;
+  console.log(url);
   const result = await fetch(`${url}`);
   const data = await result.json();
   _result.innerHTML = "";
@@ -115,7 +164,7 @@ function countDown(duration, count) {
         _result.innerHTML = `<p>Time finshed Your Score : ${correcrScore}.</p>`;
         _againBtn.style.display = "block";
         _checkBtn.style.display = "none";
-      } else if ( questcount === count) {
+      } else if (questcount === count) {
         clearInterval(countDownInterval);
       }
     }, 1000);
