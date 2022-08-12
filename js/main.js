@@ -8,6 +8,8 @@ let _againBtn = document.getElementById("again");
 let _countDown = document.querySelector(".countdown");
 let _category = document.getElementById("category");
 let _difficulty = document.getElementById("difficulty");
+let _wrapper = document.querySelector(".wrapper");
+let _start = document.querySelector(".start");
 
 let btnStart = document.getElementById("start");
 
@@ -45,24 +47,42 @@ let correctAnswer = "",
   totalQuestion = 3,
   questcount = 0;
 
-  
+let url=`https://opentdb.com/api.php?amount=10` ;
 btnStart.onclick = (event) => {
   event.preventDefault();
+  // url = `https://opentdb.com/api.php?amount=50${cat}${diff}`;
+  // console.log(url);
   var opt = getSelectedOption(_category);
   var optt = getSelectedOption(_difficulty);
-  cat = `&category=${opt.value}`;
-  diff = `&difficulty=${optt.value}`;
-  url = `https://opentdb.com/api.php?amount=50${cat}${diff}`;
-  console.log(url);
+  if(opt.value === 'any'){
+    cat = ``;
+  }else{
+    cat = `&category=${opt.value}`;
+  }
+  if(optt.value === 'any'){
+    diff = ``;
+  }else{
+    diff = `&difficulty=${optt.value}`;
+  }
+  
+  _start.style.display = "none";
+  _wrapper.style.display = "unset";
+  url = `https://opentdb.com/api.php?amount=10${cat}${diff}`;
+  loadQuist();
+  eventListener();
+  _totalQuestion.textContent = totalQuestion;
+  _correctScore.textContent = questcount;
+  countDown(120, totalQuestion);
 };
-
 async function loadQuist() {
-  var opt = getSelectedOption(_category);
-  var optt = getSelectedOption(_difficulty);
-  cat = `&category=${opt.value}`;
-  diff = `&difficulty=${optt.value}`;
-  const url = `https://opentdb.com/api.php?amount=50${cat}${diff}`;
+  // var opt = getSelectedOption(_category);
+  // var optt = getSelectedOption(_difficulty);
+  // cat = `&category=${opt.value}`;
+  // diff = `&difficulty=${optt.value}`;
+  
   console.log(url);
+  console.log(cat);
+  console.log(diff);
   const result = await fetch(`${url}`);
   const data = await result.json();
   _result.innerHTML = "";
@@ -74,11 +94,7 @@ function eventListener() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  loadQuist();
-  eventListener();
-  _totalQuestion.textContent = totalQuestion;
-  _correctScore.textContent = questcount;
-  countDown(20, totalQuestion);
+
 });
 function showQuestion(data) {
   _checkBtn.disabled = false;
@@ -171,11 +187,13 @@ function countDown(duration, count) {
   }
 }
 function restartQuiz() {
+  _start.style.display = "unset";
+  _wrapper.style.display = "none";
   correcrScore = askedCount = questcount = 0;
   _againBtn.style.display = "none";
   _checkBtn.style.display = "block";
   _checkBtn.disabled = false;
   setCount();
   loadQuist();
-  countDown(20, totalQuestion);
+  countDown(120, totalQuestion);
 }
