@@ -43,7 +43,7 @@ function getSelectedOption(_difficulty) {
 let cat = ``;
 let diff = ``;
 // /////////////////////////////////////////////
-let groupOfAnswer =[];
+let groupOfAnswer = [];
 let correctAnswer = "",
   correcrScore = (askedCount = 0),
   totalQuestion = 3,
@@ -52,6 +52,18 @@ let correctAnswer = "",
 let url = `https://opentdb.com/api.php?amount=10`;
 btnStart.onclick = (event) => {
   event.preventDefault();
+  var elem = document.documentElement;
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    /* IE11 */
+    elem.msRequestFullscreen();
+  }
+
+  
   var opt = getSelectedOption(_category);
   var optt = getSelectedOption(_difficulty);
   if (opt.value === "any") {
@@ -72,7 +84,7 @@ btnStart.onclick = (event) => {
   _totalQuestion.textContent = totalQuestion;
   _correctScore.textContent = questcount;
   countDown(120, totalQuestion);
-  groupOfAnswer=[];
+  groupOfAnswer = [];
 };
 async function loadQuist() {
   // var opt = getSelectedOption(_category);
@@ -136,7 +148,6 @@ function checkAnswer() {
     _checkBtn.disabled = false;
   }
   groupOfAnswer.push(correctAnswer);
-  
 }
 function HTMLDecode(textString) {
   let doc = new DOMParser().parseFromString(textString, "text/html");
@@ -178,7 +189,6 @@ function countDown(duration, count) {
         _checkBtn.style.display = "none";
       } else if (questcount === count) {
         clearInterval(countDownInterval);
-        console.log(groupOfAnswer);
         _container.style.display = "none";
         _correctAnswer.style.display = "block";
         _answerGroup.innerHTML = `${groupOfAnswer
@@ -187,6 +197,7 @@ function countDown(duration, count) {
       }
     }, 1000);
   }
+
 }
 function restartQuiz() {
   correcrScore = askedCount = questcount = 0;
