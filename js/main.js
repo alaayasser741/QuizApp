@@ -10,8 +10,10 @@ let _category = document.getElementById("category");
 let _difficulty = document.getElementById("difficulty");
 let _wrapper = document.querySelector(".wrapper");
 let _start = document.querySelector(".start");
-
 let btnStart = document.getElementById("start");
+let _answerGroup = document.querySelector(".AnswerGroup");
+let _correctAnswer = document.querySelector(".correctAnswer");
+let _container = document.querySelector(".container");
 
 // let text = _category.options[_category.selectedIndex].text;
 // let value = _category.options[_category.selectedIndex].value;
@@ -40,28 +42,26 @@ function getSelectedOption(_difficulty) {
 }
 let cat = ``;
 let diff = ``;
-
 // /////////////////////////////////////////////
+let groupOfAnswer =[];
 let correctAnswer = "",
   correcrScore = (askedCount = 0),
   totalQuestion = 3,
   questcount = 0;
 
-let url=`https://opentdb.com/api.php?amount=10` ;
+let url = `https://opentdb.com/api.php?amount=10`;
 btnStart.onclick = (event) => {
   event.preventDefault();
-  // url = `https://opentdb.com/api.php?amount=50${cat}${diff}`;
-  // console.log(url);
   var opt = getSelectedOption(_category);
   var optt = getSelectedOption(_difficulty);
-  if(opt.value === 'any'){
+  if (opt.value === "any") {
     cat = ``;
-  }else{
+  } else {
     cat = `&category=${opt.value}`;
   }
-  if(optt.value === 'any'){
+  if (optt.value === "any") {
     diff = ``;
-  }else{
+  } else {
     diff = `&difficulty=${optt.value}`;
   }
   _start.style.display = "none";
@@ -71,18 +71,14 @@ btnStart.onclick = (event) => {
   eventListener();
   _totalQuestion.textContent = totalQuestion;
   _correctScore.textContent = questcount;
-  
   countDown(120, totalQuestion);
+  groupOfAnswer=[];
 };
 async function loadQuist() {
   // var opt = getSelectedOption(_category);
   // var optt = getSelectedOption(_difficulty);
   // cat = `&category=${opt.value}`;
   // diff = `&difficulty=${optt.value}`;
-  
-  console.log(url);
-  console.log(cat);
-  console.log(diff);
   const result = await fetch(`${url}`);
   const data = await result.json();
   _result.innerHTML = "";
@@ -122,7 +118,6 @@ function selectOption() {
       option.classList.add("selected");
     });
   });
-  // console.log(correctAnswer);
 }
 
 function checkAnswer() {
@@ -133,13 +128,15 @@ function checkAnswer() {
       correcrScore++;
       _result.innerHTML = `<p><i class="fa-solid fa-circle-check"></i>Correct Answer!</p>`;
     } else {
-      _result.innerHTML = `<p><i class="fa-solid fa-circle-xmark"></i>Incorrect Answer!</p> <small><b>Correct Answer: </b>${correctAnswer}</small>`;
+      _result.innerHTML = `<p><i class="fa-solid fa-circle-xmark"></i>Wrong Answer!</p>`;
     }
     checkCount();
   } else {
     _result.innerHTML = `<p><i class="fa-solid fa-circle-question"></i>Please select an option!</p>`;
     _checkBtn.disabled = false;
   }
+  groupOfAnswer.push(correctAnswer);
+  
 }
 function HTMLDecode(textString) {
   let doc = new DOMParser().parseFromString(textString, "text/html");
@@ -147,17 +144,16 @@ function HTMLDecode(textString) {
 }
 function checkCount() {
   questcount++;
-  // console.log(questcount);
   askedCount++;
   setCount();
   if (askedCount == totalQuestion) {
-    _result.innerHTML += `<p>Your Score is ${correcrScore}.</p>`;
+    _result.innerHTML = `<p>Your Score is ${correcrScore}.</p>`;
     _againBtn.style.display = "block";
     _checkBtn.style.display = "none";
   } else {
     setTimeout(() => {
       loadQuist();
-    }, 300);
+    }, 1000);
   }
   // countDown(20,totalQuestion);
 }
@@ -182,18 +178,25 @@ function countDown(duration, count) {
         _checkBtn.style.display = "none";
       } else if (questcount === count) {
         clearInterval(countDownInterval);
+        console.log(groupOfAnswer);
+        _container.style.display = "none";
+        _correctAnswer.style.display = "block";
+        _answerGroup.innerHTML = `${groupOfAnswer
+          .map((option, index) => `<li> ${option}</li>`)
+          .join("")}`;
       }
     }, 1000);
   }
 }
 function restartQuiz() {
+  correcrScore = askedCount = questcount = 0;
   _start.style.display = "unset";
   _wrapper.style.display = "none";
-  correcrScore = askedCount = questcount = 0;
   _againBtn.style.display = "none";
   _checkBtn.style.display = "block";
+  _container.style.display = "block";
+  _correctAnswer.style.display = "none";
   _checkBtn.disabled = false;
   setCount();
   loadQuist();
-  
 }
