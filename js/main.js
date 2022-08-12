@@ -64,7 +64,6 @@ btnStart.onclick = (event) => {
   }else{
     diff = `&difficulty=${optt.value}`;
   }
-  
   _start.style.display = "none";
   _wrapper.style.display = "unset";
   url = `https://opentdb.com/api.php?amount=10${cat}${diff}`;
@@ -72,6 +71,7 @@ btnStart.onclick = (event) => {
   eventListener();
   _totalQuestion.textContent = totalQuestion;
   _correctScore.textContent = questcount;
+  
   countDown(120, totalQuestion);
 };
 async function loadQuist() {
@@ -93,9 +93,9 @@ function eventListener() {
   _againBtn.addEventListener("click", restartQuiz);
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+// document.addEventListener("DOMContentLoaded", function () {
 
-});
+// });
 function showQuestion(data) {
   _checkBtn.disabled = false;
   correctAnswer = data.correct_answer;
@@ -195,5 +195,5 @@ function restartQuiz() {
   _checkBtn.disabled = false;
   setCount();
   loadQuist();
-  countDown(120, totalQuestion);
+  
 }
