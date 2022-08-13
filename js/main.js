@@ -46,11 +46,12 @@ let diff = ``;
 let groupOfAnswer = [];
 let correctAnswer = "",
   correcrScore = (askedCount = 0),
-  totalQuestion = 3,
+  totalQuestion = 10,
   questcount = 0;
 
 let url = `https://opentdb.com/api.php?amount=10`;
 btnStart.onclick = (event) => {
+  alert('If You Close Full Screen Quiz Will End !')
   event.preventDefault();
   var elem = document.documentElement;
   if (elem.requestFullscreen) {
@@ -195,11 +196,29 @@ function countDown(duration, count) {
           .map((option, index) => `<li> ${option}</li>`)
           .join("")}`;
       }
+      if (
+        window.fullScreen ||
+        (window.innerWidth == screen.width && window.innerHeight == screen.height)
+      ) {
+      } else {
+        clearInterval(countDownInterval);
+        _result.innerHTML = `<p>You Close Full Screen Quiz Ended!<br> Your Score : ${correcrScore}.</p>`;
+        _container.style.display = "none";
+        _againBtn.style.display = "block";
+        _checkBtn.style.display = "none";
+      }
     }, 1000);
   }
-
 }
 function restartQuiz() {
+  var elem = document.documentElement;
+  if (elem.exitFullscreen) {
+    elem.exitFullscreen();
+  } else if (elem.webkitExitFullscreen) { /* Safari */
+  elem.webkitExitFullscreen();
+  } else if (elem.msExitFullscreen) { /* IE11 */
+  elem.msExitFullscreen();
+  }
   correcrScore = askedCount = questcount = 0;
   _start.style.display = "unset";
   _wrapper.style.display = "none";
