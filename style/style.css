@@ -30,7 +30,51 @@ body {
   min-height: 100vh;
 }
 
+.start form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: var(--white);
+  padding: 4rem;
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px;
+  width: 500px;
+}
+.start form select {
+  font-size: 1rem;
+  padding: 10px 20px;
+  background-color: var(--purple);
+  color: var(--white);
+  border-radius: 0.5rem;
+  outline: 0;
+}
+.start form button {
+  border: none;
+  border-radius: 0.5rem;
+  outline: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  margin: 25px auto 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: block;
+  background-color: var(--grey);
+  color: var(--black);
+  letter-spacing: 2;
+  transition: var(--transition);
+  box-shadow: 0 4px 0 0 #bbb;
+}
+.start form button:hover {
+  background-color: #e6e6e6;
+  box-shadow: 0 4px 0 0 #a7a7a7;
+}
+.start form button:active {
+  transform: scale(0.97);
+}
+
 .wrapper {
+  display: none;
   background-color: var(--white);
   padding: 4rem;
   line-height: 3;
@@ -38,6 +82,41 @@ body {
   box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px;
   width: 600px;
   position: relative;
+}
+.wrapper .correctAnswer {
+  display: none;
+}
+.wrapper .correctAnswer h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--purple);
+}
+.wrapper .correctAnswer ul {
+  list-style: none;
+}
+.wrapper .correctAnswer ul li {
+  background-color: var(--purple);
+  margin: 15px 0;
+  border-radius: 10px;
+  padding: 0 15px;
+  color: var(--white);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 3px solid var(--purple);
+  box-shadow: 0 4px 0 0 #6c4298;
+  counter-increment: li;
+}
+.wrapper .correctAnswer ul li::before {
+  content: "-" counter(li);
+  padding-left: 20px;
+  color: var(--white);
+  display: inline-block;
+  width: 1em;
+  margin-left: -1.5em;
+  margin-right: 0.5em;
+  text-align: right;
+  direction: rtl;
 }
 .wrapper .container .head {
   text-align: center;
@@ -103,7 +182,8 @@ body {
   border-color: var(--grey);
   box-shadow: 0 4px 0 0 #bbb;
 }
-.wrapper .container .footer button {
+
+.footer button {
   border: none;
   border-radius: 0.5rem;
   outline: 0;
@@ -120,14 +200,15 @@ body {
   transition: var(--transition);
   box-shadow: 0 4px 0 0 #bbb;
 }
-.wrapper .container .footer button:hover {
+.footer button:hover {
   background-color: #e6e6e6;
   box-shadow: 0 4px 0 0 #a7a7a7;
 }
-.wrapper .container .footer button:active {
+.footer button:active {
   transform: scale(0.97);
 }
-.wrapper .container .footer #again {
+
+#again {
   display: none;
 }
 
