@@ -6,14 +6,92 @@ let _result = document.getElementById("result");
 let _checkBtn = document.getElementById("check");
 let _againBtn = document.getElementById("again");
 let _countDown = document.querySelector(".countdown");
+let _category = document.getElementById("category");
+let _difficulty = document.getElementById("difficulty");
+let _wrapper = document.querySelector(".wrapper");
+let _start = document.querySelector(".start");
+let btnStart = document.getElementById("start");
+let _answerGroup = document.querySelector(".AnswerGroup");
+let _correctAnswer = document.querySelector(".correctAnswer");
+let _container = document.querySelector(".container");
 
+// let text = _category.options[_category.selectedIndex].text;
+// let value = _category.options[_category.selectedIndex].value;
+
+// /////////////////////////////////////////
+// Function to display selected value on screen
+function getSelectedOption(_category) {
+  var opt;
+  for (var i = 0, len = _category.options.length; i < len; i++) {
+    opt = _category.options[i];
+    if (opt.selected === true) {
+      break;
+    }
+  }
+  return opt;
+}
+function getSelectedOption(_difficulty) {
+  var opt;
+  for (var i = 0, len = _difficulty.options.length; i < len; i++) {
+    opt = _difficulty.options[i];
+    if (opt.selected === true) {
+      break;
+    }
+  }
+  return opt;
+}
+let cat = ``;
+let diff = ``;
+// /////////////////////////////////////////////
+let groupOfAnswer = [];
 let correctAnswer = "",
   correcrScore = (askedCount = 0),
-  totalQuestion = 3,
+  totalQuestion = 10,
   questcount = 0;
 
+let url = `https://opentdb.com/api.php?amount=10`;
+btnStart.onclick = (event) => {
+  alert('If You Close Full Screen Quiz Will End !')
+  event.preventDefault();
+  var elem = document.documentElement;
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    /* IE11 */
+    elem.msRequestFullscreen();
+  }
+
+  
+  var opt = getSelectedOption(_category);
+  var optt = getSelectedOption(_difficulty);
+  if (opt.value === "any") {
+    cat = ``;
+  } else {
+    cat = `&category=${opt.value}`;
+  }
+  if (optt.value === "any") {
+    diff = ``;
+  } else {
+    diff = `&difficulty=${optt.value}`;
+  }
+  _start.style.display = "none";
+  _wrapper.style.display = "unset";
+  url = `https://opentdb.com/api.php?amount=10${cat}${diff}`;
+  loadQuist();
+  eventListener();
+  _totalQuestion.textContent = totalQuestion;
+  _correctScore.textContent = questcount;
+  countDown(120, totalQuestion);
+  groupOfAnswer = [];
+};
 async function loadQuist() {
-  const url = "https://opentdb.com/api.php?amount=50&category=15";
+  // var opt = getSelectedOption(_category);
+  // var optt = getSelectedOption(_difficulty);
+  // cat = `&category=${opt.value}`;
+  // diff = `&difficulty=${optt.value}`;
   const result = await fetch(`${url}`);
   const data = await result.json();
   _result.innerHTML = "";
@@ -24,13 +102,9 @@ function eventListener() {
   _againBtn.addEventListener("click", restartQuiz);
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  loadQuist();
-  eventListener();
-  _totalQuestion.textContent = totalQuestion;
-  _correctScore.textContent = questcount;
-  countDown(20, totalQuestion);
-});
+// document.addEventListener("DOMContentLoaded", function () {
+
+// });
 function showQuestion(data) {
   _checkBtn.disabled = false;
   correctAnswer = data.correct_answer;
@@ -57,7 +131,6 @@ function selectOption() {
       option.classList.add("selected");
     });
   });
-  // console.log(correctAnswer);
 }
 
 function checkAnswer() {
@@ -68,13 +141,14 @@ function checkAnswer() {
       correcrScore++;
       _result.innerHTML = `<p><i class="fa-solid fa-circle-check"></i>Correct Answer!</p>`;
     } else {
-      _result.innerHTML = `<p><i class="fa-solid fa-circle-xmark"></i>Incorrect Answer!</p> <small><b>Correct Answer: </b>${correctAnswer}</small>`;
+      _result.innerHTML = `<p><i class="fa-solid fa-circle-xmark"></i>Wrong Answer!</p>`;
     }
     checkCount();
   } else {
     _result.innerHTML = `<p><i class="fa-solid fa-circle-question"></i>Please select an option!</p>`;
     _checkBtn.disabled = false;
   }
+  groupOfAnswer.push(correctAnswer);
 }
 function HTMLDecode(textString) {
   let doc = new DOMParser().parseFromString(textString, "text/html");
@@ -82,17 +156,16 @@ function HTMLDecode(textString) {
 }
 function checkCount() {
   questcount++;
-  // console.log(questcount);
   askedCount++;
   setCount();
   if (askedCount == totalQuestion) {
-    _result.innerHTML += `<p>Your Score is ${correcrScore}.</p>`;
+    _result.innerHTML = `<p>Your Score is ${correcrScore}.</p>`;
     _againBtn.style.display = "block";
     _checkBtn.style.display = "none";
   } else {
     setTimeout(() => {
       loadQuist();
-    }, 300);
+    }, 1000);
   }
   // countDown(20,totalQuestion);
 }
@@ -115,18 +188,45 @@ function countDown(duration, count) {
         _result.innerHTML = `<p>Time finshed Your Score : ${correcrScore}.</p>`;
         _againBtn.style.display = "block";
         _checkBtn.style.display = "none";
-      } else if ( questcount === count) {
+      } else if (questcount === count) {
         clearInterval(countDownInterval);
+        _container.style.display = "none";
+        _correctAnswer.style.display = "block";
+        _answerGroup.innerHTML = `${groupOfAnswer
+          .map((option, index) => `<li> ${option}</li>`)
+          .join("")}`;
+      }
+      if (
+        window.fullScreen ||
+        (window.innerWidth == screen.width && window.innerHeight == screen.height)
+      ) {
+      } else {
+        clearInterval(countDownInterval);
+        _result.innerHTML = `<p>You Close Full Screen Quiz Ended!<br> Your Score : ${correcrScore}.</p>`;
+        _container.style.display = "none";
+        _againBtn.style.display = "block";
+        _checkBtn.style.display = "none";
       }
     }, 1000);
   }
 }
 function restartQuiz() {
+  var elem = document.documentElement;
+  if (elem.exitFullscreen) {
+    elem.exitFullscreen();
+  } else if (elem.webkitExitFullscreen) { /* Safari */
+  elem.webkitExitFullscreen();
+  } else if (elem.msExitFullscreen) { /* IE11 */
+  elem.msExitFullscreen();
+  }
   correcrScore = askedCount = questcount = 0;
+  _start.style.display = "unset";
+  _wrapper.style.display = "none";
   _againBtn.style.display = "none";
   _checkBtn.style.display = "block";
+  _container.style.display = "block";
+  _correctAnswer.style.display = "none";
   _checkBtn.disabled = false;
   setCount();
   loadQuist();
-  countDown(20, totalQuestion);
 }
